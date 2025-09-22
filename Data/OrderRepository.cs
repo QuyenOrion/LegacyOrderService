@@ -11,26 +11,38 @@ namespace LegacyOrderService.Data
 
         public void Save(Order order)
         {
-            var connection = new SqliteConnection(_connectionString);
-            
-            connection.Open();
+            try
+            {
+                var connection = new SqliteConnection(_connectionString);
 
-            var command = connection.CreateCommand();
-            command.CommandText = $@"
-                INSERT INTO Orders (CustomerName, ProductName, Quantity, Price)
-                VALUES ('{order.CustomerName}', '{order.ProductName}', {order.Quantity}, {order.Price})";
+                connection.Open();
 
-            command.ExecuteNonQuery();            
+                using var command = connection.CreateCommand();
+                command.CommandText = @"
+                    INSERT INTO Orders (CustomerName, ProductName, Quantity, Price)
+                    VALUES (@customer, @product, @quantity, @price)";
+
+                command.Parameters.AddWithValue("@customer", order.CustomerName);
+                command.Parameters.AddWithValue("@product", order.ProductName);
+                command.Parameters.AddWithValue("@quantity", order.Quantity);
+                command.Parameters.AddWithValue("@price", order.Price);
+
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error saving order: " + ex.Message);
+            }
         }
 
         public void SeedBadData()
         {
-            var connection = new SqliteConnection(_connectionString);            
+            var connection = new SqliteConnection(_connectionString);
             connection.Open();
             var cmd = connection.CreateCommand();
             cmd.CommandText = "INSERT INTO Orders (CustomerName, ProductName, Quantity, Price) VALUES ('John', 'Widget', 9999, 9.99)";
             cmd.ExecuteNonQuery();
-            
+
         }
     }
 }
