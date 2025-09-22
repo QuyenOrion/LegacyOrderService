@@ -13,7 +13,7 @@ namespace LegacyOrderService.Data
         {
             try
             {
-                var connection = new SqliteConnection(_connectionString);
+                using var connection = new SqliteConnection(_connectionString);
 
                 connection.Open();
 
@@ -27,7 +27,12 @@ namespace LegacyOrderService.Data
                 command.Parameters.AddWithValue("@quantity", order.Quantity);
                 command.Parameters.AddWithValue("@price", order.Price);
 
-                command.ExecuteNonQuery();
+                var rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected == 0)
+                {
+                    throw new Exception("No rows inserted");
+                }
             }
             catch (Exception ex)
             {
