@@ -16,8 +16,7 @@ namespace LegacyOrderService
             var productRepo = new ProductRepository();
             double price = productRepo.GetPrice(product);
 
-            Console.WriteLine("Enter quantity:");
-            int quantity = Convert.ToInt32(Console.ReadLine());
+            int quantity = ReadPositiveIntegerFromConsole("Quantity");
 
             Console.WriteLine("Processing order...");
 
@@ -56,6 +55,21 @@ namespace LegacyOrderService
                 else
                     value = input;
             } while (string.IsNullOrWhiteSpace(value));
+
+            return value;
+        }
+
+        private static int ReadPositiveIntegerFromConsole(string fieldName)
+        {
+            int value;
+            do
+            {
+                string input = ReadRequiredInputFromConsole(fieldName);
+                if (!int.TryParse(input, out value) || value <= 0)
+                {
+                    Console.WriteLine($"{fieldName} must be a positive integer.");
+                }
+            } while (value <= 0);
 
             return value;
         }
