@@ -24,14 +24,12 @@ namespace LegacyOrderService
             Console.WriteLine("Processing order...");
 
             var order = new Order(qty, price) { CustomerName = name ?? string.Empty, ProductName = product };
-            
-            double totalAmount = order.Quantity * order.Price;
 
             Console.WriteLine("Order complete!");
             Console.WriteLine("Customer: " + order.CustomerName);
             Console.WriteLine("Product: " + order.ProductName);
             Console.WriteLine("Quantity: " + order.Quantity);
-            Console.WriteLine("Total: $" + totalAmount);
+            Console.WriteLine("Total: $" + order.TotalAmount);
 
             Console.WriteLine("Saving order to database...");
             var repo = new OrderRepository();

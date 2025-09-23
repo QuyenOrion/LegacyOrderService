@@ -12,5 +12,7 @@ namespace LegacyOrderService.Models
             Quantity = quantity;
             Price = price;
         }
+
+        public double TotalAmount => Quantity * Price;
     }
 }
