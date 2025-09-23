@@ -9,21 +9,19 @@ namespace LegacyOrderService
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Order Processor!");
-            Console.WriteLine("Enter customer name:");
-            string name = Console.ReadLine();
+            
+            string name = ReadRequiredInputFromConsole("Customer name");
+            string product = ReadRequiredInputFromConsole("Product name");
 
-            Console.WriteLine("Enter product name:");
-            string product = Console.ReadLine();
             var productRepo = new ProductRepository();
             double price = productRepo.GetPrice(product);
 
-
             Console.WriteLine("Enter quantity:");
-            int qty = Convert.ToInt32(Console.ReadLine());
+            int quantity = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("Processing order...");
 
-            var order = new Order(qty, price) { CustomerName = name ?? string.Empty, ProductName = product };
+            var order = new Order(quantity, price) { CustomerName = name, ProductName = product };
 
             Console.WriteLine("Order complete!");
             Console.WriteLine("Customer: " + order.CustomerName);
@@ -35,6 +33,26 @@ namespace LegacyOrderService
             var repo = new OrderRepository();
             repo.Save(order);
             Console.WriteLine("Done.");
+        }
+
+        private static string ReadRequiredInputFromConsole(string fieldName)
+        {
+            Console.WriteLine($"Enter {fieldName}:");
+            string value = string.Empty;
+            do
+            {
+                string? input = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine($"{fieldName} is required. Enter {fieldName} (type 'exit' then press Enter to finish):");
+                }
+                else if (input.Equals("exit", StringComparison.OrdinalIgnoreCase))
+                    Environment.Exit(0);
+                else
+                    value = input;
+            } while (string.IsNullOrWhiteSpace(value));
+
+            return value;
         }
     }
 }
