@@ -9,7 +9,7 @@ namespace LegacyOrderService
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Order Processor!");
-            
+
             string name = ReadRequiredInputFromConsole("Customer name");
             string product = ReadRequiredInputFromConsole("Product name");
 
@@ -24,15 +24,20 @@ namespace LegacyOrderService
             var order = new Order(quantity, price) { CustomerName = name, ProductName = product };
 
             Console.WriteLine("Order complete!");
-            Console.WriteLine("Customer: " + order.CustomerName);
-            Console.WriteLine("Product: " + order.ProductName);
-            Console.WriteLine("Quantity: " + order.Quantity);
-            Console.WriteLine("Total: $" + order.TotalAmount);
+            DisplayOrderOnConsole(order);
 
             Console.WriteLine("Saving order to database...");
             var repo = new OrderRepository();
             repo.Save(order);
             Console.WriteLine("Done.");
+        }
+
+        private static void DisplayOrderOnConsole(Order order)
+        {
+            Console.WriteLine("Customer: " + order.CustomerName);
+            Console.WriteLine("Product: " + order.ProductName);
+            Console.WriteLine("Quantity: " + order.Quantity);
+            Console.WriteLine("Total: $" + order.TotalAmount);
         }
 
         private static string ReadRequiredInputFromConsole(string fieldName)
