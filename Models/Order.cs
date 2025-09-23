@@ -18,8 +18,8 @@ namespace LegacyOrderService.Models
             if (price <= 0)
                 throw new ArgumentException("Price must be a positive number");
 
-            if (quantity <= 0)
-                throw new ArgumentException("Quantity must be a positive number");
+            if (quantity == 0)
+                throw new ArgumentException("Quantity must not be zero");
 
             Quantity = quantity;
             Price = price;
