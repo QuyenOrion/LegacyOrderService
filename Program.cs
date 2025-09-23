@@ -8,27 +8,34 @@ namespace LegacyOrderService
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Order Processor!");
+            try
+            {
+                Console.WriteLine("Welcome to Order Processor!");
 
-            string name = ReadRequiredInputFromConsole("Customer name");
-            string product = ReadRequiredInputFromConsole("Product name");
+                string name = ReadRequiredInputFromConsole("Customer name");
+                string product = ReadRequiredInputFromConsole("Product name");
 
-            var productRepo = new ProductRepository();
-            double price = productRepo.GetPrice(product);
+                var productRepo = new ProductRepository();
+                double price = productRepo.GetPrice(product);
 
-            int quantity = ReadPositiveIntegerFromConsole("Quantity");
+                int quantity = ReadPositiveIntegerFromConsole("Quantity");
 
-            Console.WriteLine("Processing order...");
+                Console.WriteLine("Processing order...");
 
-            var order = new Order(quantity, price) { CustomerName = name, ProductName = product };
+                var order = new Order(name, product, quantity, price);
 
-            Console.WriteLine("Order complete!");
-            DisplayOrderOnConsole(order);
+                Console.WriteLine("Order complete!");
+                DisplayOrderOnConsole(order);
 
-            Console.WriteLine("Saving order to database...");
-            var repo = new OrderRepository();
-            repo.Save(order);
-            Console.WriteLine("Done.");
+                Console.WriteLine("Saving order to database...");
+                var repo = new OrderRepository();
+                repo.Save(order);
+                Console.WriteLine("Done.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private static void DisplayOrderOnConsole(Order order)
