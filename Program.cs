@@ -17,11 +17,11 @@ namespace LegacyOrderService
             double price = productRepo.GetPrice(product);
 
             Console.WriteLine("Enter quantity:");
-            int qty = Convert.ToInt32(Console.ReadLine());
+            int quantity = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("Processing order...");
 
-            var order = new Order(qty, price) { CustomerName = name, ProductName = product };
+            var order = new Order(quantity, price) { CustomerName = name, ProductName = product };
 
             Console.WriteLine("Order complete!");
             Console.WriteLine("Customer: " + order.CustomerName);
