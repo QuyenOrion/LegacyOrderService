@@ -4,21 +4,21 @@ using LegacyOrderService.Data;
 
 namespace LegacyOrderService
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             try
             {
                 Console.WriteLine("Welcome to Order Processor!");
 
-                string name = ReadRequiredInputFromConsole("Customer name");
-                string product = ReadRequiredInputFromConsole("Product name");
+                string name = !string.IsNullOrWhiteSpace(args[0]) ? args[0] : ReadRequiredInputFromConsole("Customer name");
+                string product = !string.IsNullOrWhiteSpace(args[1]) ? args[1] : ReadRequiredInputFromConsole("Product name");
 
                 var productRepo = new ProductRepository();
                 double price = productRepo.GetPrice(product);
 
-                int quantity = ReadIntegerFromConsole("Quantity");
+                int quantity = int.TryParse(args[2], out quantity) && quantity != 0 ? quantity : ReadIntegerFromConsole("Quantity");
 
                 Console.WriteLine("Processing order...");
 

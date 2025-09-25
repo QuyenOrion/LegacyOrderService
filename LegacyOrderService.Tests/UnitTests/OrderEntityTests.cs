@@ -1,5 +1,3 @@
-using LegacyOrderService.Models;
-
 namespace LegacyOrderService.Tests.UnitTests;
 
 public class OrderEntityTests
