@@ -10,15 +10,22 @@ namespace LegacyOrderService
         {
             try
             {
+                Console.WriteLine("Seeding product...");
+                var productRepo = new ProductRepository();
+                productRepo.SeedProduct();
+                Console.WriteLine("Done.");
+
                 Console.WriteLine("Welcome to Order Processor!");
 
-                string name = !string.IsNullOrWhiteSpace(args[0]) ? args[0] : ReadRequiredInputFromConsole("Customer name");
-                string product = !string.IsNullOrWhiteSpace(args[1]) ? args[1] : ReadRequiredInputFromConsole("Product name");
+                string name = args.Length == 3 && !string.IsNullOrWhiteSpace(args[0]) 
+                              ? args[0] : ReadRequiredInputFromConsole("Customer name");
+                string product = args.Length == 3 && !string.IsNullOrWhiteSpace(args[1]) 
+                                 ? args[1] : ReadRequiredInputFromConsole("Product name");
 
-                var productRepo = new ProductRepository();
                 double price = productRepo.GetPrice(product);
 
-                int quantity = int.TryParse(args[2], out quantity) && quantity != 0 ? quantity : ReadIntegerFromConsole("Quantity");
+                int quantity = args.Length == 3 && int.TryParse(args[2], out quantity) && quantity != 0 
+                               ? quantity : ReadIntegerFromConsole("Quantity");
 
                 Console.WriteLine("Processing order...");
 

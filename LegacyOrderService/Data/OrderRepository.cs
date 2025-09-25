@@ -39,15 +39,5 @@ namespace LegacyOrderService.Data
                 Console.WriteLine("Error saving order: " + ex.Message);
             }
         }
-
-        public void SeedBadData()
-        {
-            var connection = new SqliteConnection(_connectionString);
-            connection.Open();
-            var cmd = connection.CreateCommand();
-            cmd.CommandText = "INSERT INTO Orders (CustomerName, ProductName, Quantity, Price) VALUES ('John', 'Widget', 9999, 9.99)";
-            cmd.ExecuteNonQuery();
-
-        }
     }
 }
