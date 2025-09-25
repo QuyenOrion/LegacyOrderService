@@ -27,12 +27,21 @@ public class LegacyOrderServiceTests
     private static dynamic? GetLatestOrder()
     {
         string connectionString = $"Data Source={Path.Combine(AppContext.BaseDirectory, "orders.db")}";
+        
         using var connection = new SqliteConnection(connectionString);
-        connection.Open();
-        return connection.QueryFirst<dynamic?>(@"
+        
+        var totalRecord = connection.QueryFirst<long>("SELECT COUNT(*) FROM Orders");
+        if (totalRecord == 0)
+        {
+            return null;
+        }
+
+        var result = connection.QueryFirst<dynamic>(@"
             SELECT Id, CustomerName, ProductName, Quantity, Price 
             FROM Orders 
             WHERE CustomerName = 'James' AND ProductName = 'Widget'
             ORDER BY Id DESC");
+
+        return result;
     }
 }
